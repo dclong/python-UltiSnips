@@ -4,7 +4,8 @@
 def ultisnips(file, prefix, sniprefix):
     """@todo: Docstring for ultisnips.
 
-    :file: @todo
+    :param prefix prefix of method (excluding the dot) as the patten. 
+    :sniprefix prefix of triggering snippets (excluding the dot).
     :returns: @todo
 
     """
