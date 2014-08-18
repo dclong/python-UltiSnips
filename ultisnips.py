@@ -1,35 +1,40 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-def ultisnips(file, prefix, sniprefix):
-    """@todo: Docstring for ultisnips.
+def ultisnips(file, trigger, prefix):
+    """Extra functions/methods/text from a text file to generate snippets.
+    ( and a blank space are used as delimiters to extract names of functions/methods. 
 
-    :param prefix prefix of method (excluding the dot) as the patten. 
-    :sniprefix prefix of triggering snippets (excluding the dot).
+    :trigger prefix of triggering snippets.
+    :prefix prefix of function/method/text as the patten. 
     :returns: @todo
 
     """
     import re
     if type(file) == list:
         n = len(file)
-        if n != 3:
-            print("Wrong number of arguments!")
+        if n == 3:
+            ultisnips(file[0], file[1], file[2])
             return
         #end if
-        ultisnips(file[0], file[1], file[2])
+        if n == 2:
+            ultisnips(file[0], file[1], "")
+            return
+        #end if
+        print("Wrong number of arguments!")
         return
     #end if
     f = open(file, 'r')
     lines = f.readlines() 
-    pattern = "\w+\(.*\)"
-    if prefix != "":
-        pattern = prefix + "\.\w+|" + prefix + "\." + pattern
-    #end if
+    # default pattern
+    p1 = prefix + "\w+"
+    p2 = prefix + "\w+\(.*\)"
+    pattern = p1 + "|" + p2
     pattern = re.compile(pattern)
     lines = [line for line in lines if pattern.match(line) != None]
     methods = ['"' + methodName(line, prefix) + '"' for line in lines]
-    snip = "snippet " + sniprefix + ". \"Methods of " + sniprefix +"\"\n" 
-    snip += "${2:" + sniprefix + "}.$1`!p snip.rv = complete(t[1], [" + ", ".join(methods) + "])`\n"
+    snip = "snippet " + trigger + " \"Methods of " + trigger +"\" !b\n" 
+    snip += "${2:" + trigger + "}$1`!p snip.rv = complete(t[1], [" + ", ".join(methods) + "])`\n"
     snip += "endsnippet\n"
     print(snip)
 #end def 
