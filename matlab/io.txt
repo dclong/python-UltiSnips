@@ -1,0 +1,4 @@
+[A,count] = fread(fid,size,precision)
+[A,count] = fread(fid,size,precision,skip)
+status = fseek(fid,offset,origin)
+position = ftell(fid)
