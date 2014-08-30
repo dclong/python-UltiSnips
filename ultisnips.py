@@ -1,6 +1,18 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+def parse_args(args):
+    if args.startswith(","):
+        return parse_args(args[1:])
+    #end if
+    if args.startswith(" "):
+        return parse_args(args[1:])
+    #end if
+    if args.startswith("["):
+        return "${" + tab_stop_number + parse_args() + "}"
+    #end if
+#end def
+
 def ultisnips(file, trigger, prefix):
     """Extra functions/methods/text from a text file to generate snippets.
     ( and a blank space are used as delimiters to extract names of functions/methods. 
