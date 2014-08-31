@@ -1,20 +1,41 @@
 #!/usr/bin/env python
 # encoding: utf-8
+import warnings
 
-def parse_args(args):
+def parseArgs(args, tab_stop_index):
+    if args == "":
+        return ""
+    #end if
     if args.startswith(","):
-        return parse_args(args[1:])
+        return "," + parseArgs(args[1:], tab_stop_index)
     #end if
     if args.startswith(" "):
-        return parse_args(args[1:])
+        return " " + parseArgs(args[1:], tab_stop_index)
     #end if
     if args.startswith("["):
-        return "${" + tab_stop_number + parse_args() + "}"
+        if args.endswith("]"):
+            return "${" + str(tab_stop_index) + ":" + parseArgs(args[1:-1], tab_stop_index+1) + "}"
+        #end if
+        warnings.warn('Mal-formatted brackets in "' + args + '"!')
+        return ""
     #end if
+    index = endOfFirstArg(args)
+    return "${" + str(tab_stop_index) + ":" + args[:index] + "}" + parseArgs(args[index:], tab_stop_index+1)
+#end def
+
+def endOfFirstArg(args):
+    n = len(args)
+    for i in range(n):
+        char = args[i]
+        if char=="[" or char==",":
+            return i
+        #end if
+    #end for
+    return n
 #end def
 
 def ultisnips(file, trigger, prefix):
-    """Extra functions/methods/text from a text file to generate snippets.
+    """Extract functions/methods/text from a text file to generate snippets.
     ( and a blank space are used as delimiters to extract names of functions/methods. 
 
     :trigger prefix of triggering snippets.
@@ -45,11 +66,31 @@ def ultisnips(file, trigger, prefix):
     pattern = re.compile(pattern)
     lines = [line for line in lines if pattern.match(line) != None]
     methods = ['"' + methodName(line, prefix) + '"' for line in lines]
-    snip = "snippet " + trigger + " \"Methods of " + trigger +"\" !b\n" 
+    snip = "snippet " + trigger + " \"Methods of " + trigger +"\" b\n" 
     snip += "${2:" + trigger + "}$1`!p snip.rv = complete(t[1], [" + ", ".join(methods) + "])`\n"
     snip += "endsnippet\n"
-    print(snip)
+    snips = [snip]
+    for line in lines:
+        snips.append("\n" + methodSnippet(line, prefix, trigger))
+    #end for
+    snips = [snip for snip in snips if snip.strip()!=""]
+    snips = "".join(snips)
+    print(snips)
 #end def 
+
+def methodSnippet(line, prefix, trigger):
+    begin = line.find("(")   
+    if begin != -1:
+        end = line.find(")")
+        method = methodName(line, prefix)
+        method = trigger + method
+        snip =  "snippet " + method + ' "' + method + "\" b\n" 
+        snip += method + "(" + parseArgs(line[begin+1:end], 1) + ")\n"
+        snip += "endsnippet\n"
+        return snip
+    #end if
+    return ""
+#end def
 
 def methodName(line, prefix):
     delimiter = "("
