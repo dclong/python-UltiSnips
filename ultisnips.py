@@ -35,7 +35,7 @@ def endOfFirstArg(args):
     return n
 #end def
 
-def ultiSnips(file, trigger, prefix, extraSpace, triggerInTabStop):
+def ultiSnips(file, trigger, prefix, extraSymbol, triggerInTabStop):
     '''Extract functions/methods/text from a text file to generate snippets.
     ( and a space are used as delimiters to extract names of functions/methods. 
 
@@ -53,19 +53,25 @@ def ultiSnips(file, trigger, prefix, extraSpace, triggerInTabStop):
     pattern = re.compile(pattern)
     lines = [line for line in lines if pattern.match(line) != None]
     methods = ['"' + methodName(line, prefix) + '"' for line in lines]
-    snip = "snippet " + trigger + " \"Methods of " + trigger +"\" b\n" 
-    snip += "${2:" + trigger + "}$1`!p snip.rv = complete(t[1], [" + ", ".join(methods) + "])`\n"
+    snip = "global !p\nfrom complete import *\nendglobal\n\n"
+    snip += "snippet " + trigger + " \"Methods of " + trigger +"\" b\n" 
+    if triggerInTabStop:
+        snip += "${2:" + trigger + "}"
+    else:
+        snip += trigger 
+    #end if
+    snip += "$1`!p snip.rv = complete(t[1], [" + ", ".join(methods) + "])`\n"
     snip += "endsnippet\n"
     snips = [snip]
     for line in lines:
-        snips.append("\n" + methodSnippet(line, prefix, trigger, extraSpace, triggerInTabStop))
+        snips.append("\n" + methodSnippet(line, prefix, trigger, extraSymbol, triggerInTabStop))
     #end for
     snips = [snip for snip in snips if snip.strip()!=""]
     snips = "".join(snips)
     print(snips)
 #end def 
 
-def methodSnippet(line, prefix, trigger, extraSpace, triggerInTabStop):
+def methodSnippet(line, prefix, trigger, extraSymbol, triggerInTabStop):
     '''Generate snippet for a method/function in a module.
     '''
     begin = line.find("(")   
@@ -73,8 +79,9 @@ def methodSnippet(line, prefix, trigger, extraSpace, triggerInTabStop):
         end = line.find(")")
         method = methodName(line, prefix)
         tm = trigger + method
-        if extraSpace:
-            snip = 'snippet "\\b' + tm + ' ?" "' + tm + '" r\n' 
+        extraSymbol = normalizeExtraSymbol(extraSymbol)
+        if extraSymbol != "":
+            snip = 'snippet "\\b' + tm + extraSymbol + '?" "' + tm + '" r\n' 
         else:
             snip = 'snippet ' + tm + ' "' + tm + '" w\n' 
         #end if
@@ -88,6 +95,14 @@ def methodSnippet(line, prefix, trigger, extraSpace, triggerInTabStop):
         return snip
     #end if
     return ""
+#end def
+
+def normalizeExtraSymbol(symbol):
+    escapes = ["*", "?", ".", "+", "^", "$", "\\", "|", ")", "(", "[", "]"]
+    if symbol in escapes:
+        return "\\"  + symbol
+    #end if
+    return symbol
 #end def
 
 def methodName(line, prefix):

@@ -12,7 +12,8 @@ def help():
         "-f file: The file containing help document.\n"
         "-t trigger: The trigger to be used. The default value is trigger.\n"
         "-p prefix: Prefix pattern in the help document. The default value is blank\n"
-        "-s Add an optional extra space to the trigger.\n"
+        "-e symbol: Add an optional extra symbol to the trigger (to avoid confliction). "
+        "The default value is blank."
         "-T Put the trigger in to a tab stop.\n"
         "-h Print help message and exit.\n"
         "Examples\n"
@@ -24,16 +25,17 @@ def runUltiSnips(args):
     -f file: The file containing help document.
     -t trigger: The trigger to be used.
     -p prfix: Prefix in the help document. The default value is blank.
-    -s Add an optional extra space to the trigger.
+    -e symbol: Add an optional extra symbol to the trigger (to avoid confliction). "
+    "The default value is blank."
     -T Put the trigger in to a tab stop.
     -h Print help message and exit.
     '''
     trigger = "trigger"
     prefix = ""
-    extraSpace = False
+    extraSymbol = ""
     triggerInTabStop = False
 #    print(args)
-    optlist, args = getopt.getopt(args, 'f:t:p:sTh')
+    optlist, args = getopt.gnu_getopt(args, 'f:t:p:e:Th')
 #    print(optlist)
 #    print(args)
     for opt in optlist:
@@ -52,8 +54,8 @@ def runUltiSnips(args):
             prefix = v
             continue
         #end if
-        if o == "-s":
-            extraSpace = True
+        if o == "-e":
+            extraSymbol = v
             continue
         #end if
         if o == "-T":
@@ -73,7 +75,7 @@ def runUltiSnips(args):
     if n == 1:
         file = args[0]
     #end if
-    ultisnips.ultiSnips(file, trigger, prefix, extraSpace, triggerInTabStop)
+    ultisnips.ultiSnips(file, trigger, prefix, extraSymbol, triggerInTabStop)
 #end def
 
 if __name__ == '__main__':
