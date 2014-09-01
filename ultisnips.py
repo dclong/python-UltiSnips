@@ -105,7 +105,7 @@ def methodName(line, prefix):
 #end def
 
 def startIndex(prefix):
-    return 0 if prefix == "" else len(prefix) + 1
+    return 0 if prefix == "" else len(prefix)
 #end def
 
 if __name__ == '__main__':
