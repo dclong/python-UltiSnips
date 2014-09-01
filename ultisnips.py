@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import warnings
+import re
 
 def parseArgs(args, tab_stop_index):
     if args == "":
@@ -34,29 +35,15 @@ def endOfFirstArg(args):
     return n
 #end def
 
-def ultisnips(file, trigger, prefix):
-    """Extract functions/methods/text from a text file to generate snippets.
-    ( and a blank space are used as delimiters to extract names of functions/methods. 
+def ultiSnips(file, trigger, prefix, extraSpace, triggerInTabStop):
+    '''Extract functions/methods/text from a text file to generate snippets.
+    ( and a space are used as delimiters to extract names of functions/methods. 
 
     :trigger prefix of triggering snippets.
     :prefix prefix of function/method/text as the patten. 
     :returns: @todo
 
-    """
-    import re
-    if type(file) == list:
-        n = len(file)
-        if n == 3:
-            ultisnips(file[0], file[1], file[2])
-            return
-        #end if
-        if n == 2:
-            ultisnips(file[0], file[1], "")
-            return
-        #end if
-        print("Wrong number of arguments!")
-        return
-    #end if
+    '''
     f = open(file, 'r')
     lines = f.readlines() 
     # default pattern
@@ -71,45 +58,48 @@ def ultisnips(file, trigger, prefix):
     snip += "endsnippet\n"
     snips = [snip]
     for line in lines:
-        snips.append("\n" + methodSnippet(line, prefix, trigger))
+        snips.append("\n" + methodSnippet(line, prefix, trigger, extraSpace, triggerInTabStop))
     #end for
     snips = [snip for snip in snips if snip.strip()!=""]
     snips = "".join(snips)
     print(snips)
 #end def 
 
-def methodSnippet(line, prefix, trigger):
+def methodSnippet(line, prefix, trigger, extraSpace, triggerInTabStop):
+    '''Generate snippet for a method/function in a module.
+    '''
     begin = line.find("(")   
     if begin != -1:
         end = line.find(")")
         method = methodName(line, prefix)
-        method = trigger + method
-        snip =  "snippet " + method + ' "' + method + "\" b\n" 
-        snip += method + "(" + parseArgs(line[begin+1:end], 1) + ")\n"
-        snip += "endsnippet\n"
+        tm = trigger + method
+        if extraSpace:
+            snip = 'snippet "\\b' + tm + ' ?" "' + tm + '" r\n' 
+        else:
+            snip = 'snippet ' + tm + ' "' + tm + '" w\n' 
+        #end if
+        if triggerInTabStop:
+            snip += "${1:" + trigger + "}" + method + "(" + parseArgs(line[begin+1:end], 2) + ")\n"
+            snip += "endsnippet\n"
+        else:
+            snip += tm + "(" + parseArgs(line[begin+1:end], 1) + ")\n"
+            snip += "endsnippet\n"
+        #end if
         return snip
     #end if
     return ""
 #end def
 
 def methodName(line, prefix):
+    '''Extract the method name from a line in the help document.
+    '''
     delimiter = "("
     if delimiter in line:
-        return line[startIndex(prefix):line.index(delimiter)]
+        return line[len(prefix):line.index(delimiter)]
     #end if
     delimiter = " "
     if delimiter in line:
-        return line[startIndex(prefix):line.index(delimiter)]
+        return line[len(prefix):line.index(delimiter)]
     #end if
-    return line[startIndex(prefix):].strip()
+    return line[len(prefix):].strip()
 #end def
-
-def startIndex(prefix):
-    return 0 if prefix == "" else len(prefix)
-#end def
-
-if __name__ == '__main__':
-    import sys
-    sys.argv.pop(0)
-    ultisnips(sys.argv, None, None)
-#end if
