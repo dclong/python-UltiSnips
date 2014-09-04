@@ -1,0 +1,44 @@
+global !p
+from complete import *
+endglobal
+
+snippet list. "Methods of list." b
+${2:list.}$1`!p snip.rv = complete(t[1], ["append", "extend", "insert", "remove", "pop", "index", "count", "sort", "reverse"])`
+endsnippet
+
+snippet "\blist.append[a-zA-Z]?" "list.append" r
+${1:list.}append(${2:x})
+endsnippet
+
+snippet "\blist.extend[a-zA-Z]?" "list.extend" r
+${1:list.}extend(${2:L})
+endsnippet
+
+snippet "\blist.insert[a-zA-Z]?" "list.insert" r
+${1:list.}insert(${2:i}, ${3:x})
+endsnippet
+
+snippet "\blist.remove[a-zA-Z]?" "list.remove" r
+${1:list.}remove(${2:x})
+endsnippet
+
+snippet "\blist.pop[a-zA-Z]?" "list.pop" r
+${1:list.}pop(${2:${3:i}})
+endsnippet
+
+snippet "\blist.index[a-zA-Z]?" "list.index" r
+${1:list.}index(${2:x})
+endsnippet
+
+snippet "\blist.count[a-zA-Z]?" "list.count" r
+${1:list.}count(${2:x})
+endsnippet
+
+snippet "\blist.sort[a-zA-Z]?" "list.sort" r
+${1:list.}sort(${2:cmp=None}, ${3:key=None}, ${4:reverse=False})
+endsnippet
+
+snippet "\blist.reverse[a-zA-Z]?" "list.reverse" r
+${1:list.}reverse()
+endsnippet
+
