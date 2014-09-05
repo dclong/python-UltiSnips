@@ -32,7 +32,7 @@ def runUltiSnips(args):
     '''
     trigger = "trigger"
     prefix = ""
-    extraSymbol = ""
+    extraSymbol = "[a-zA-Z]"
     triggerInTabStop = False
 #    print(args)
     optlist, args = getopt.gnu_getopt(args, 'f:t:p:e:Th')

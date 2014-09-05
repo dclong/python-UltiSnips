@@ -14,10 +14,13 @@ def parse_args(args, reset):
     #end if
     if args.startswith("["):
         if args.endswith("]"):
+            args = args[1:-1]
             snip = "${" + str(parse_args.__tab_stop_index__) + ":" 
             parse_args.__tab_stop_index__ += 1
-            snip += parse_args(args[1:-1], False) + "}"
-            return snip
+            if end_of_first_arg(args) >= len(args):
+                return snip + args + "}"
+            #end if
+            return snip + parse_args(args, False) + "}"
         #end if
         warnings.warn('Mal-formatted brackets in "' + args + '"!')
         return ""

@@ -1,4 +1,5 @@
-import args
+import arguments
+
 def method_snippet_1(trigger, method, extra_symbol):
     trigger += method
     extra_symbol = normalize_extra_symbol(extra_symbol)
@@ -10,13 +11,13 @@ def method_snippet_1(trigger, method, extra_symbol):
 
 def method_snippet_2(trigger, method, args, triggerInTabStop):
     if triggerInTabStop:
-        snip = method + "(" + args.parse_args(args, True) + ")\n"
+        snip = method + "(" + arguments.parse_args(args, True) + ")\n"
         if trigger.endswith("."):
-            return "${" + str(args.parse_args.__tab_stop_index__) + ":" + trigger[:-1] + "}." + snip
+            return "${" + str(arguments.parse_args.__tab_stop_index__) + ":" + trigger[:-1] + "}." + snip
         #end if
-        return "${" + str(args.parse_args.__tab_stop_index__) + ":" + trigger + "}" + snip
+        return "${" + str(arguments.parse_args.__tab_stop_index__) + ":" + trigger + "}" + snip
     #end if
-    return tm + "(" + args.parse_args(line[begin+1:end], True) + ")\n"
+    return trigger + method + "(" + arguments.parse_args(args, True) + ")\n"
 #end def
 
 def method_snippet(line, prefix, trigger, extra_symbol, triggerInTabStop):
@@ -25,7 +26,7 @@ def method_snippet(line, prefix, trigger, extra_symbol, triggerInTabStop):
     begin = line.find("(")   
     if begin != -1:
         end = line.find(")")
-        method = methodName(line, prefix)
+        method = method_name(line, prefix)
         snip = method_snippet_1(trigger, method, extra_symbol) \
                 + method_snippet_2(trigger, method, line[begin+1:end], triggerInTabStop) \
                 + "endsnippet\n"
