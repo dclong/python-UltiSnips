@@ -44,7 +44,7 @@ def endOfFirstArg(args):
     return n
 #end def
 
-def ultiSnips(file, trigger, prefix, extraSymbol, triggerInTabStop):
+def ultiSnips(file, trigger, prefix, extra_symbol, triggerInTabStop):
     '''Extract functions/methods/text from a text file to generate snippets.
     ( and a space are used as delimiters to extract names of functions/methods. 
 
@@ -73,41 +73,49 @@ def ultiSnips(file, trigger, prefix, extraSymbol, triggerInTabStop):
     snip += "endsnippet\n"
     snips = [snip]
     for line in lines:
-        snips.append("\n" + methodSnippet(line, prefix, trigger, extraSymbol, triggerInTabStop))
+        snips.append("\n" + method_snippet(line, prefix, trigger, extra_symbol, triggerInTabStop))
     #end for
     snips = [snip for snip in snips if snip.strip()!=""]
     snips = "".join(snips)
     print(snips)
 #end def 
 
-def methodSnippet(line, prefix, trigger, extraSymbol, triggerInTabStop):
+def method_snippet_1(trigger, method, extra_symbol):
+    trigger += method
+    extra_symbol = normalize_extra_symbol(extra_symbol)
+    if extra_symbol != "":
+        return 'snippet "\\b' + trigger + extra_symbol + '?" "' + trigger + '" r\n' 
+    #end if
+    return 'snippet ' + trigger + ' "' + trigger + '" w\n' 
+#end def
+
+def method_snippet_2(trigger, method, args, triggerInTabStop):
+    if triggerInTabStop:
+        snip = method + "(" + parse_args(args, True) + ")\n"
+        if trigger.endswith("."):
+            return "${" + str(parse_args.__tab_stop_index__) + ":" + trigger[:-1] + "}." + snip
+        #end if
+        return "${" + str(parse_args.__tab_stop_index__) + ":" + trigger + "}" + snip
+    #end if
+    return tm + "(" + parse_args(line[begin+1:end], True) + ")\n"
+#end def
+
+def method_snippet(line, prefix, trigger, extra_symbol, triggerInTabStop):
     '''Generate snippet for a method/function in a module.
     '''
     begin = line.find("(")   
     if begin != -1:
         end = line.find(")")
         method = methodName(line, prefix)
-        tm = trigger + method
-        extraSymbol = normalizeExtraSymbol(extraSymbol)
-        if extraSymbol != "":
-            snip = 'snippet "\\b' + tm + extraSymbol + '?" "' + tm + '" r\n' 
-        else:
-            snip = 'snippet ' + tm + ' "' + tm + '" w\n' 
-        #end if
-        if triggerInTabStop:
-            temp = method + "(" + parse_args(line[begin+1:end], True) + ")\n"
-            snip += "${" + str(parse_args.__tab_stop_index__) + ":" + trigger + "}" + temp
-            snip += "endsnippet\n"
-        else:
-            snip += tm + "(" + parse_args(line[begin+1:end], True) + ")\n"
-            snip += "endsnippet\n"
-        #end if
+        snip = method_snippet_1(trigger, method, extra_symbol) \
+                + method_snippet_2(trigger, method, line[begin+1:end], triggerInTabStop) \
+                + "endsnippet\n"
         return snip
     #end if
     return ""
 #end def
 
-def normalizeExtraSymbol(symbol):
+def normalize_extra_symbol(symbol):
     escapes = ["*", "?", ".", "+", "^", "$", "\\", "|", ")", "(", "[", "]"]
     if symbol in escapes:
         return "\\"  + symbol
