@@ -24,9 +24,9 @@ def ultiSnips(file, trigger, prefix, extra_symbol, trigger_in_tab_stop):
     methods = ['"' + method.method_name(line, prefix) + '"' for line in lines]
     snip = "global !p\nfrom complete import *\nendglobal\n\n"
     if trigger.endswith("."):
-        snip += 'snippet "' + trigger[:-1] + '\." "Methods of ' + trigger + '" r\n' 
+        snip += 'snippet "\b' + trigger[:-1] + '\." "Methods of ' + trigger + '" r\n' 
     else:
-        snip += 'snippet "' + trigger + '" "Methods of ' + trigger + '" r\n' 
+        snip += 'snippet "\b' + trigger + '" "Methods of ' + trigger + '" r\n' 
     #end if
     if trigger_in_tab_stop:
         if trigger.endswith("."):
