@@ -9,8 +9,8 @@ def method_snippet_1(trigger, method, extra_symbol):
     return 'snippet ' + trigger + ' "' + trigger + '" w\n' 
 #end def
 
-def method_snippet_2(trigger, method, args, triggerInTabStop):
-    if triggerInTabStop:
+def method_snippet_2(trigger, method, args, trigger_in_tab_stop):
+    if trigger_in_tab_stop:
         snip = method + "(" + arguments.parse_args(args, True) + ")\n"
         if trigger.endswith("."):
             return "${" + str(arguments.parse_args.__tab_stop_index__) + ":" + trigger[:-1] + "}." + snip
@@ -20,7 +20,7 @@ def method_snippet_2(trigger, method, args, triggerInTabStop):
     return trigger + method + "(" + arguments.parse_args(args, True) + ")\n"
 #end def
 
-def method_snippet(line, prefix, trigger, extra_symbol, triggerInTabStop):
+def method_snippet(line, prefix, trigger, extra_symbol, trigger_in_tab_stop):
     '''Generate snippet for a method/function in a module.
     '''
     begin = line.find("(")   
@@ -28,7 +28,7 @@ def method_snippet(line, prefix, trigger, extra_symbol, triggerInTabStop):
         end = line.find(")")
         method = method_name(line, prefix)
         snip = method_snippet_1(trigger, method, extra_symbol) \
-                + method_snippet_2(trigger, method, line[begin+1:end], triggerInTabStop) \
+                + method_snippet_2(trigger, method, line[begin+1:end], trigger_in_tab_stop) \
                 + "endsnippet\n"
         return snip
     #end if
