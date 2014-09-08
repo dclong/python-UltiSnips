@@ -1,0 +1,18 @@
+Class AESCipher
+
+blockalgo.BlockAlgo --+
+                      |
+                     AESCipher
+
+AES cipher object
+Instance Methods
+  	
+__init__(self, key, *args, **kwargs)
+Initialize an AES cipher object 	
+    Inherited from blockalgo.BlockAlgo
+  	
+decrypt(self, ciphertext)
+Decrypt data with the key and the parameters set at initialization. 	
+  	
+encrypt(self, plaintext)
+Encrypt data with the key and the parameters set at initialization.
