@@ -18,3 +18,19 @@ snippet "\bCrypto.Cipher.AES.new[a-zA-Z]?" "Crypto.Cipher.AES.new" r
 Crypto.Cipher.AES.new(${1:key}, ${2:*args}, ${3:**kwargs})
 endsnippet
 
+snippet "\baes(c(i(p(h(e(r)?)?)?)?)?)?\." "Methods of AESCipher." r
+AESCipher.$1`!p snip.rv = complete(t[1], ["__init__", "decrypt", "encrypt"])`
+endsnippet
+
+snippet "\bAESCipher.__init__[a-zA-Z]?" "AESCipher.__init__" r
+AESCipher.__init__(${1:self}, ${2:key}, ${3:*args}, ${4:**kwargs})
+endsnippet
+
+snippet "\bAESCipher.decrypt[a-zA-Z]?" "AESCipher.decrypt" r
+AESCipher.decrypt(${1:self}, ${2:ciphertext})
+endsnippet
+
+snippet "\bAESCipher.encrypt[a-zA-Z]?" "AESCipher.encrypt" r
+AESCipher.encrypt(${1:self}, ${2:plaintext})
+endsnippet
+
