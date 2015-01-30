@@ -1,0 +1,24 @@
+global !p
+from complete import *
+endglobal
+
+snippet "dist\." "Methods of dist." r
+dist.$1`!p snip.rv = complete(t[1], ["dnorm", "pnorm", "qnorm", "rnorm"])`
+endsnippet
+
+snippet "\bdist.dnorm[a-zA-Z]?" "dist.dnorm" r
+dist.dnorm(${1:x}, ${2:mean = 0}, ${3:sd = 1}, ${4:log = FALSE})
+endsnippet
+
+snippet "\bdist.pnorm[a-zA-Z]?" "dist.pnorm" r
+dist.pnorm(${1:q}, ${2:mean = 0}, ${3:sd = 1}, ${4:lower.tail = TRUE}, ${5:log.p = FALSE})
+endsnippet
+
+snippet "\bdist.qnorm[a-zA-Z]?" "dist.qnorm" r
+dist.qnorm(${1:p}, ${2:mean = 0}, ${3:sd = 1}, ${4:lower.tail = TRUE}, ${5:log.p = FALSE})
+endsnippet
+
+snippet "\bdist.rnorm[a-zA-Z]?" "dist.rnorm" r
+dist.rnorm(${1:n}, ${2:mean = 0}, ${3:sd = 1})
+endsnippet
+
