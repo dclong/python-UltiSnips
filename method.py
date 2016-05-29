@@ -4,9 +4,9 @@ def method_snippet_1(trigger, method, extra_symbol):
     trigger += method
     extra_symbol = normalize_extra_symbol(extra_symbol)
     if extra_symbol != "":
-        return 'snippet "\\b' + trigger + extra_symbol + '?" "' + trigger + '" r\n' 
+        return 'priority 10\nsnippet "\\b' + trigger + extra_symbol + '?" "' + trigger + '" r\n' 
     #end if
-    return 'snippet ' + trigger + ' "' + trigger + '" w\n' 
+    return 'priority 10\nsnippet ' + trigger + ' "' + trigger + '" w\n' 
 #end def
 
 def method_snippet_2(trigger, method, args, trigger_in_tab_stop):
