@@ -1,58 +1,77 @@
-import arguments
+import argument as arg
+import re
 
-def method_snippet_1(trigger, method, extra_symbol):
-    trigger += method
-    extra_symbol = normalize_extra_symbol(extra_symbol)
-    if extra_symbol != "":
-        return 'priority 10\nsnippet "\\b' + trigger + extra_symbol + '?" "' + trigger + '" r\n' 
-    #end if
-    return 'priority 10\nsnippet ' + trigger + ' "' + trigger + '" w\n' 
-#end def
-
-def method_snippet_2(trigger, method, args, trigger_in_tab_stop):
-    if trigger_in_tab_stop:
-        snip = method + "(" + arguments.parse_args(args, True) + ")\n"
-        if trigger.endswith("."):
-            return "${" + str(arguments.parse_args.__tab_stop_index__) + ":" + trigger[:-1] + "}." + snip
-        #end if
-        return "${" + str(arguments.parse_args.__tab_stop_index__) + ":" + trigger + "}" + snip
-    #end if
-    return trigger + method + "(" + arguments.parse_args(args, True) + ")\n"
-#end def
-
-def method_snippet(line, prefix, trigger, extra_symbol, trigger_in_tab_stop):
+def snippet(line, prefix, trigger, extra_symbol, trigger_tab):
     '''Generate snippet for a method/function in a module.
     '''
-    begin = line.find("(")   
-    if begin != -1:
-        end = line.find(")")
-        method = method_name(line, prefix)
-        snip = method_snippet_1(trigger, method, extra_symbol) \
-                + method_snippet_2(trigger, method, line[begin+1:end], trigger_in_tab_stop) \
-                + "endsnippet\n"
-        return snip
-    #end if
-    return ""
+    if not '(' in line:
+        return ''
+    s = '''
+priority 10
+snippet "\\b{trigger}{extra_symbol}" "{name}" r 
+{tab_trigger}{method}({args})
+endsnippet
+'''
+    method = name(line, prefix)
+    s = s.format(
+        trigger = trigger + method,
+        extra_symbol = _normalize_symbol(extra_symbol),
+        name = method,
+        method = method,
+        tab_trigger = _tab_trigger(trigger, trigger_tab),
+        args = arg.parse(line, True)
+    )
+    return s
 #end def
 
-def normalize_extra_symbol(symbol):
-    escapes = ["*", "?", ".", "+", "^", "$", "\\", "|", ")", "(", "[", "]"]
+def _tab_trigger(trigger, trigger_tab):
+    s = ''
+    if trigger_tab:
+        s = '${index:trigger}'
+        s = s.replace('index', str(arg.parse._index))
+        s = s.replace('trigger', trigger)
+    return s
+
+def _normalize_symbol(symbol):
+    if symbol == '':
+        return ''
+    escapes = [
+        "*",
+        "?",
+        ".",
+        "+",
+        "^",
+        "$",
+        "\\",
+        "|",
+        ")",
+        "(",
+        "[",
+        "]"
+    ]
     if symbol in escapes:
-        return "\\"  + symbol
-    #end if
-    return symbol
-#end def
+        symbol = '\\'  + symbol
+    return symbol + '?'
 
-def method_name(line, prefix):
+def name(line, prefix):
+    m = _name(line, prefix)
+    return _clean(m)
+
+def _clean(method):
+    method = re.sub('\[.*\]', '', method)
+    method = re.sub(':.*$', '', method)
+    return method.strip()
+
+def _name(line, prefix):
     '''Extract the method name from a line in the help document.
     '''
+    prefix = '^(' + prefix + ')'
+    line = re.sub(prefix, '', line)
     delimiter = "("
     if delimiter in line:
-        return line[len(prefix):line.index(delimiter)]
-    #end if
+        return line[:line.index(delimiter)]
     delimiter = " "
     if delimiter in line:
-        return line[len(prefix):line.index(delimiter)]
-    #end if
-    return line[len(prefix):].strip()
+        return line[:line.index(delimiter)]
+    return line.strip()
 #end def

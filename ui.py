@@ -19,8 +19,8 @@ def help():
         "Examples\n"
         "ultisnips -t getopt. -p getopt. -s getopt.txt"
         ))
-#end def
-def runUltiSnips(args):
+
+def main(args):
     '''Run underlying workhorse ultiSnips to generate snippets.
     -f file: The file containing help document.
     -t trigger: The trigger to be used.
@@ -34,51 +34,36 @@ def runUltiSnips(args):
     prefix = ""
     extraSymbol = "("
     triggerInTabStop = False
-#    print(args)
     optlist, args = getopt.gnu_getopt(args, 'f:t:p:e:Th')
-#    print(optlist)
-#    print(args)
-    for opt in optlist:
-        o = opt[0]
-        v = opt[1]
+    for o,v in optlist:
         if o == "-f":
             file = v
             continue
-        #end if
         if o == "-t":
             trigger = v
             #print("trigger: " + trigger)
             continue
-        #end if
         if o == "-p":
             prefix = v
             continue
-        #end if
         if o == "-e":
             extraSymbol = v
             continue
-        #end if
         if o == "-T":
             triggerInTabStop = True
             continue
-        #end if
         if o == "-h":
             help()
             return
-        #end if
     #end for
     n = len(args)
     if n > 1:
         warnings.warn("Too many independent arguments!")
         return
-    #end if
     if n == 1:
         file = args[0]
-    #end if
-    ultisnips.ultiSnips(file, trigger, prefix, extraSymbol, triggerInTabStop)
-#end def
+    ultisnips.ultisnips(file, trigger, prefix, extraSymbol, triggerInTabStop)
 
 if __name__ == '__main__':
     sys.argv.pop(0)
-    runUltiSnips(sys.argv)
-#end if
+    main(sys.argv)
