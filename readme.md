@@ -12,5 +12,5 @@ It focus on the auto-complete functionality.
 seq.txt is a text file by copying and pasting the help page of Seq. 
 Please refer to snippets/scala/seq.txt for example.
 ```
-./ui.py -p 'def |val ' -t '' -f seq.txt > j.txt
+./ui.py -p 'def |val ' -t '' -f seq.txt
 ```
