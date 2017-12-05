@@ -1,0 +1,115 @@
+def baseRelationToDataFrame(baseRelation: BaseRelation): DataFrame
+
+Convert a BaseRelation created for external data sources into a DataFrame.
+lazy val catalog: Catalog
+
+Interface through which the user may create, drop, alter or query underlying databases, tables, functions etc.
+def close(): Unit
+
+Synonym for stop().
+lazy val conf: RuntimeConfig
+
+Runtime configuration interface for Spark.
+def createDataFrame(data: List[_], beanClass: Class[_]): DataFrame
+
+Applies a schema to a List of Java Beans.
+def createDataFrame(rdd: JavaRDD[_], beanClass: Class[_]): DataFrame
+
+Applies a schema to an RDD of Java Beans.
+def createDataFrame(rdd: RDD[_], beanClass: Class[_]): DataFrame
+
+Applies a schema to an RDD of Java Beans.
+Developer API def createDataFrame(rows: List[Row], schema: StructType): DataFrame
+
+Creates a DataFrame from a java.util.List containing Rows using the given schema.
+Developer API def createDataFrame(rowRDD: JavaRDD[Row], schema: StructType): DataFrame
+
+Creates a DataFrame from a JavaRDD containing Rows using the given schema.
+Developer API def createDataFrame(rowRDD: RDD[Row], schema: StructType): DataFrame
+
+Creates a DataFrame from an RDD containing Rows using the given schema.
+Experimental def createDataFrame[A <: Product](data: Seq[A])(implicit arg0: scala.reflect.api.JavaUniverse.TypeTag[A]): DataFrame
+
+Creates a DataFrame from a local Seq of Product.
+Experimental def createDataFrame[A <: Product](rdd: RDD[A])(implicit arg0: scala.reflect.api.JavaUniverse.TypeTag[A]): DataFrame
+
+Creates a DataFrame from an RDD of Product (e.g.
+Experimental def createDataset[T](data: List[T])(implicit arg0: Encoder[T]): Dataset[T]
+
+Creates a Dataset from a java.util.List of a given type.
+Experimental def createDataset[T](data: RDD[T])(implicit arg0: Encoder[T]): Dataset[T]
+
+Creates a Dataset from an RDD of a given type.
+Experimental def createDataset[T](data: Seq[T])(implicit arg0: Encoder[T]): Dataset[T]
+
+Creates a Dataset from a local Seq of data of a given type.
+lazy val emptyDataFrame: DataFrame
+
+Returns a DataFrame with no rows or columns.
+Experimental def emptyDataset[T](implicit arg0: Encoder[T]): Dataset[T]
+
+Creates a new Dataset of type T containing zero elements.
+Experimental def experimental: ExperimentalMethods
+
+A collection of methods that are considered experimental, but can be used to hook into the query planner for advanced functionality.
+Experimental object implicits extends SQLImplicits with Serializable
+
+(Scala-specific) Implicit methods available in Scala for converting common Scala objects into DataFrames.
+Experimental def listenerManager: ExecutionListenerManager
+
+An interface to register custom org.apache.spark.sql.util.QueryExecutionListeners that listen for execution metrics.
+def newSession(): SparkSession
+
+Start a new session with isolated SQL configurations, temporary tables, registered functions are isolated, but sharing the underlying SparkContext and cached data.
+Experimental def range(start: Long, end: Long, step: Long, numPartitions: Int): Dataset[Long]
+
+Creates a Dataset with a single LongType column named id, containing elements in a range from start to end (exclusive) with a step value, with partition number specified.
+Experimental def range(start: Long, end: Long, step: Long): Dataset[Long]
+
+Creates a Dataset with a single LongType column named id, containing elements in a range from start to end (exclusive) with a step value.
+Experimental def range(start: Long, end: Long): Dataset[Long]
+
+Creates a Dataset with a single LongType column named id, containing elements in a range from start to end (exclusive) with step value 1.
+Experimental def range(end: Long): Dataset[Long]
+
+Creates a Dataset with a single LongType column named id, containing elements in a range from 0 to end (exclusive) with step value 1.
+def read: DataFrameReader
+
+Returns a DataFrameReader that can be used to read non-streaming data in as a DataFrame.
+def readStream: DataStreamReader
+
+Returns a DataStreamReader that can be used to read streaming data in as a DataFrame.
+lazy val sessionState: SessionState
+
+State isolated across sessions, including SQL configurations, temporary tables, registered functions, and everything else that accepts a org.apache.spark.sql.internal.SQLConf.
+lazy val sharedState: SharedState
+
+State shared across sessions, including the SparkContext, cached data, listener, and a catalog that interacts with external systems.
+val sparkContext: SparkContext
+
+The Spark context associated with this Spark session.
+def sql(sqlText: String): DataFrame
+
+Executes a SQL query using Spark, returning the result as a DataFrame.
+val sqlContext: SQLContext
+
+A wrapped version of this session in the form of a SQLContext, for backward compatibility.
+def stop(): Unit
+
+Stop the underlying SparkContext.
+Experimental def streams: StreamingQueryManager
+
+Returns a StreamingQueryManager that allows managing all the StreamingQuerys active on this.
+def table(tableName: String): DataFrame
+
+Returns the specified table/view as a DataFrame.
+def time[T](f: ⇒ T): T
+
+Executes some code block and prints to stdout the time taken to execute the block.
+def udf: UDFRegistration
+
+A collection of methods for registering user-defined functions (UDF).
+def version: String
+
+The version of Spark on which this application is running.
+

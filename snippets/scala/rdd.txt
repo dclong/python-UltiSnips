@@ -1,0 +1,249 @@
+def ++(other: RDD[T]): RDD[T]
+
+Return the union of this RDD and another one.
+def aggregate[U](zeroValue: U)(seqOp: (U, T) ⇒ U, combOp: (U, U) ⇒ U)(implicit arg0: ClassTag[U]): U
+
+Aggregate the elements of each partition, and then the results for all the partitions, using given combine functions and a neutral "zero value".
+def cache(): RDD.this.type
+
+Persist this RDD with the default storage level (MEMORY_ONLY).
+def cartesian[U](other: RDD[U])(implicit arg0: ClassTag[U]): RDD[(T, U)]
+
+Return the Cartesian product of this RDD and another one, that is, the RDD of all pairs of elements (a, b) where a is in this and b is in other.
+def checkpoint(): Unit
+
+Mark this RDD for checkpointing.
+def coalesce(numPartitions: Int, shuffle: Boolean = false, partitionCoalescer: Option[PartitionCoalescer] = Option.empty)(implicit ord: Ordering[T] = null): RDD[T]
+
+Return a new RDD that is reduced into numPartitions partitions.
+def collect[U](f: PartialFunction[T, U])(implicit arg0: ClassTag[U]): RDD[U]
+
+Return an RDD that contains all matching values by applying f.
+def collect(): Array[T]
+
+Return an array that contains all of the elements in this RDD.
+def context: SparkContext
+
+The org.apache.spark.SparkContext that this RDD was created on.
+def count(): Long
+
+Return the number of elements in the RDD.
+def countApprox(timeout: Long, confidence: Double = 0.95): PartialResult[BoundedDouble]
+
+Approximate version of count() that returns a potentially incomplete result within a timeout, even if not all tasks have finished.
+def countApproxDistinct(relativeSD: Double = 0.05): Long
+
+Return approximate number of distinct elements in the RDD.
+def countApproxDistinct(p: Int, sp: Int): Long
+
+Return approximate number of distinct elements in the RDD.
+def countByValue()(implicit ord: Ordering[T] = null): Map[T, Long]
+
+Return the count of each unique value in this RDD as a local map of (value, count) pairs.
+def countByValueApprox(timeout: Long, confidence: Double = 0.95)(implicit ord: Ordering[T] = null): PartialResult[Map[T, BoundedDouble]]
+
+Approximate version of countByValue().
+final def dependencies: Seq[Dependency[_]]
+
+Get the list of dependencies of this RDD, taking into account whether the RDD is checkpointed or not.
+def distinct(): RDD[T]
+
+Return a new RDD containing the distinct elements in this RDD.
+def distinct(numPartitions: Int)(implicit ord: Ordering[T] = null): RDD[T]
+
+Return a new RDD containing the distinct elements in this RDD.
+def filter(f: (T) ⇒ Boolean): RDD[T]
+
+Return a new RDD containing only the elements that satisfy a predicate.
+def first(): T
+
+Return the first element in this RDD.
+def flatMap[U](f: (T) ⇒ TraversableOnce[U])(implicit arg0: ClassTag[U]): RDD[U]
+
+Return a new RDD by first applying a function to all elements of this RDD, and then flattening the results.
+def fold(zeroValue: T)(op: (T, T) ⇒ T): T
+
+Aggregate the elements of each partition, and then the results for all the partitions, using a given associative function and a neutral "zero value".
+def foreach(f: (T) ⇒ Unit): Unit
+
+Applies a function f to all elements of this RDD.
+def foreachPartition(f: (Iterator[T]) ⇒ Unit): Unit
+
+Applies a function f to each partition of this RDD.
+def getCheckpointFile: Option[String]
+
+Gets the name of the directory to which this RDD was checkpointed.
+final def getNumPartitions: Int
+
+Returns the number of partitions of this RDD.
+def getStorageLevel: StorageLevel
+
+Get the RDD's current storage level, or StorageLevel.NONE if none is set.
+def glom(): RDD[Array[T]]
+
+Return an RDD created by coalescing all elements within each partition into an array.
+def groupBy[K](f: (T) ⇒ K, p: Partitioner)(implicit kt: ClassTag[K], ord: Ordering[K] = null): RDD[(K, Iterable[T])]
+
+Return an RDD of grouped items.
+def groupBy[K](f: (T) ⇒ K, numPartitions: Int)(implicit kt: ClassTag[K]): RDD[(K, Iterable[T])]
+
+Return an RDD of grouped elements.
+def groupBy[K](f: (T) ⇒ K)(implicit kt: ClassTag[K]): RDD[(K, Iterable[T])]
+
+Return an RDD of grouped items.
+val id: Int
+
+A unique ID for this RDD (within its SparkContext).
+def intersection(other: RDD[T], numPartitions: Int): RDD[T]
+
+Return the intersection of this RDD and another one.
+def intersection(other: RDD[T], partitioner: Partitioner)(implicit ord: Ordering[T] = null): RDD[T]
+
+Return the intersection of this RDD and another one.
+def intersection(other: RDD[T]): RDD[T]
+
+Return the intersection of this RDD and another one.
+def isCheckpointed: Boolean
+
+Return whether this RDD is checkpointed and materialized, either reliably or locally.
+def isEmpty(): Boolean
+
+final def iterator(split: Partition, context: TaskContext): Iterator[T]
+
+Internal method to this RDD; will read from cache if applicable, or otherwise compute it.
+def keyBy[K](f: (T) ⇒ K): RDD[(K, T)]
+
+Creates tuples of the elements in this RDD by applying f.
+def localCheckpoint(): RDD.this.type
+
+Mark this RDD for local checkpointing using Spark's existing caching layer.
+def map[U](f: (T) ⇒ U)(implicit arg0: ClassTag[U]): RDD[U]
+
+Return a new RDD by applying a function to all elements of this RDD.
+def mapPartitions[U](f: (Iterator[T]) ⇒ Iterator[U], preservesPartitioning: Boolean = false)(implicit arg0: ClassTag[U]): RDD[U]
+
+Return a new RDD by applying a function to each partition of this RDD.
+def mapPartitionsWithIndex[U](f: (Int, Iterator[T]) ⇒ Iterator[U], preservesPartitioning: Boolean = false)(implicit arg0: ClassTag[U]): RDD[U]
+
+Return a new RDD by applying a function to each partition of this RDD, while tracking the index of the original partition.
+def max()(implicit ord: Ordering[T]): T
+
+Returns the max of this RDD as defined by the implicit Ordering[T].
+def min()(implicit ord: Ordering[T]): T
+
+Returns the min of this RDD as defined by the implicit Ordering[T].
+var name: String
+
+A friendly name for this RDD
+val partitioner: Option[Partitioner]
+
+Optionally overridden by subclasses to specify how they are partitioned.
+final def partitions: Array[Partition]
+
+Get the array of partitions of this RDD, taking into account whether the RDD is checkpointed or not.
+def persist(): RDD.this.type
+
+Persist this RDD with the default storage level (MEMORY_ONLY).
+def persist(newLevel: StorageLevel): RDD.this.type
+
+Set this RDD's storage level to persist its values across operations after the first time it is computed.
+def pipe(command: Seq[String], env: Map[String, String] = Map(), printPipeContext: ((String) ⇒ Unit) ⇒ Unit = null, printRDDElement: (T, (String) ⇒ Unit) ⇒ Unit = null, separateWorkingDir: Boolean = false, bufferSize: Int = 8192, encoding: String = Codec.defaultCharsetCodec.name): RDD[String]
+
+Return an RDD created by piping elements to a forked external process.
+def pipe(command: String, env: Map[String, String]): RDD[String]
+
+Return an RDD created by piping elements to a forked external process.
+def pipe(command: String): RDD[String]
+
+Return an RDD created by piping elements to a forked external process.
+final def preferredLocations(split: Partition): Seq[String]
+
+Get the preferred locations of a partition, taking into account whether the RDD is checkpointed.
+def randomSplit(weights: Array[Double], seed: Long = Utils.random.nextLong): Array[RDD[T]]
+
+Randomly splits this RDD with the provided weights.
+def reduce(f: (T, T) ⇒ T): T
+
+Reduces the elements of this RDD using the specified commutative and associative binary operator.
+def repartition(numPartitions: Int)(implicit ord: Ordering[T] = null): RDD[T]
+
+Return a new RDD that has exactly numPartitions partitions.
+def sample(withReplacement: Boolean, fraction: Double, seed: Long = Utils.random.nextLong): RDD[T]
+
+Return a sampled subset of this RDD.
+def saveAsObjectFile(path: String): Unit
+
+Save this RDD as a SequenceFile of serialized objects.
+def saveAsTextFile(path: String, codec: Class[_ <: CompressionCodec]): Unit
+
+Save this RDD as a compressed text file, using string representations of elements.
+def saveAsTextFile(path: String): Unit
+
+Save this RDD as a text file, using string representations of elements.
+def setName(_name: String): RDD.this.type
+
+Assign a name to this RDD
+def sortBy[K](f: (T) ⇒ K, ascending: Boolean = true, numPartitions: Int = this.partitions.length)(implicit ord: Ordering[K], ctag: ClassTag[K]): RDD[T]
+
+Return this RDD sorted by the given key function.
+def sparkContext: SparkContext
+
+The SparkContext that created this RDD.
+def subtract(other: RDD[T], p: Partitioner)(implicit ord: Ordering[T] = null): RDD[T]
+
+Return an RDD with the elements from this that are not in other.
+def subtract(other: RDD[T], numPartitions: Int): RDD[T]
+
+Return an RDD with the elements from this that are not in other.
+def subtract(other: RDD[T]): RDD[T]
+
+Return an RDD with the elements from this that are not in other.
+def take(num: Int): Array[T]
+
+Take the first num elements of the RDD.
+def takeOrdered(num: Int)(implicit ord: Ordering[T]): Array[T]
+
+Returns the first k (smallest) elements from this RDD as defined by the specified implicit Ordering[T] and maintains the ordering.
+def takeSample(withReplacement: Boolean, num: Int, seed: Long = Utils.random.nextLong): Array[T]
+
+Return a fixed-size sampled subset of this RDD in an array
+def toDebugString: String
+
+A description of this RDD and its recursive dependencies for debugging.
+def toJavaRDD(): JavaRDD[T]
+def toLocalIterator: Iterator[T]
+
+Return an iterator that contains all of the elements in this RDD.
+def toString(): String
+def top(num: Int)(implicit ord: Ordering[T]): Array[T]
+
+Returns the top k (largest) elements from this RDD as defined by the specified implicit Ordering[T] and maintains the ordering.
+def treeAggregate[U](zeroValue: U)(seqOp: (U, T) ⇒ U, combOp: (U, U) ⇒ U, depth: Int = 2)(implicit arg0: ClassTag[U]): U
+
+Aggregates the elements of this RDD in a multi-level tree pattern.
+def treeReduce(f: (T, T) ⇒ T, depth: Int = 2): T
+
+Reduces the elements of this RDD in a multi-level tree pattern.
+def union(other: RDD[T]): RDD[T]
+
+Return the union of this RDD and another one.
+def unpersist(blocking: Boolean = true): RDD.this.type
+
+Mark the RDD as non-persistent, and remove all blocks for it from memory and disk.
+def zip[U](other: RDD[U])(implicit arg0: ClassTag[U]): RDD[(T, U)]
+
+Zips this RDD with another one, returning key-value pairs with the first element in each RDD, second element in each RDD, etc.
+def zipPartitions[B, C, D, V](rdd2: RDD[B], rdd3: RDD[C], rdd4: RDD[D])(f: (Iterator[T], Iterator[B], Iterator[C], Iterator[D]) ⇒ Iterator[V])(implicit arg0: ClassTag[B], arg1: ClassTag[C], arg2: ClassTag[D], arg3: ClassTag[V]): RDD[V]
+def zipPartitions[B, C, D, V](rdd2: RDD[B], rdd3: RDD[C], rdd4: RDD[D], preservesPartitioning: Boolean)(f: (Iterator[T], Iterator[B], Iterator[C], Iterator[D]) ⇒ Iterator[V])(implicit arg0: ClassTag[B], arg1: ClassTag[C], arg2: ClassTag[D], arg3: ClassTag[V]): RDD[V]
+def zipPartitions[B, C, V](rdd2: RDD[B], rdd3: RDD[C])(f: (Iterator[T], Iterator[B], Iterator[C]) ⇒ Iterator[V])(implicit arg0: ClassTag[B], arg1: ClassTag[C], arg2: ClassTag[V]): RDD[V]
+def zipPartitions[B, C, V](rdd2: RDD[B], rdd3: RDD[C], preservesPartitioning: Boolean)(f: (Iterator[T], Iterator[B], Iterator[C]) ⇒ Iterator[V])(implicit arg0: ClassTag[B], arg1: ClassTag[C], arg2: ClassTag[V]): RDD[V]
+def zipPartitions[B, V](rdd2: RDD[B])(f: (Iterator[T], Iterator[B]) ⇒ Iterator[V])(implicit arg0: ClassTag[B], arg1: ClassTag[V]): RDD[V]
+def zipPartitions[B, V](rdd2: RDD[B], preservesPartitioning: Boolean)(f: (Iterator[T], Iterator[B]) ⇒ Iterator[V])(implicit arg0: ClassTag[B], arg1: ClassTag[V]): RDD[V]
+
+Zip this RDD's partitions with one (or more) RDD(s) and return a new RDD by applying a function to the zipped partitions.
+def zipWithIndex(): RDD[(T, Long)]
+
+Zips this RDD with its element indices.
+def zipWithUniqueId(): RDD[(T, Long)]
+
+Zips this RDD with generated unique Long ids.

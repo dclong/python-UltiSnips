@@ -1,0 +1,276 @@
+def addFile(path: String, recursive: Boolean): Unit
+
+Add a file to be downloaded with this Spark job on every node.
+def addFile(path: String): Unit
+
+Add a file to be downloaded with this Spark job on every node.
+def addJar(path: String): Unit
+
+Adds a JAR dependency for all tasks to be executed on this SparkContext in the future.
+Developer API def addSparkListener(listener: SparkListenerInterface): Unit
+
+Register a listener to receive up-calls from events that happen during execution.
+def appName: String
+def applicationAttemptId: Option[String]
+def applicationId: String
+
+A unique identifier for the Spark application.
+def binaryFiles(path: String, minPartitions: Int = defaultMinPartitions): RDD[(String, PortableDataStream)]
+
+Get an RDD for a Hadoop-readable dataset as PortableDataStream for each file (useful for binary data)
+def binaryRecords(path: String, recordLength: Int, conf: Configuration = hadoopConfiguration): RDD[Array[Byte]]
+
+Load data from a flat binary file, assuming the length of each record is constant.
+def broadcast[T](value: T)(implicit arg0: ClassTag[T]): Broadcast[T]
+
+Broadcast a read-only variable to the cluster, returning a org.apache.spark.broadcast.Broadcast object for reading it in distributed functions.
+def cancelAllJobs(): Unit
+
+Cancel all jobs that have been scheduled or are running.
+def cancelJob(jobId: Int): Unit
+
+Cancel a given job if it's scheduled or running.
+def cancelJob(jobId: Int, reason: String): Unit
+
+Cancel a given job if it's scheduled or running.
+def cancelJobGroup(groupId: String): Unit
+
+Cancel active jobs for the specified group.
+def cancelStage(stageId: Int): Unit
+
+Cancel a given stage and all jobs associated with it.
+def cancelStage(stageId: Int, reason: String): Unit
+
+Cancel a given stage and all jobs associated with it.
+def clearCallSite(): Unit
+
+Clear the thread-local property for overriding the call sites of actions and RDDs.
+def clearJobGroup(): Unit
+
+Clear the current thread's job group ID and its description.
+def collectionAccumulator[T](name: String): CollectionAccumulator[T]
+
+Create and register a CollectionAccumulator, which starts with empty list and accumulates inputs by adding them into the list.
+def collectionAccumulator[T]: CollectionAccumulator[T]
+
+Create and register a CollectionAccumulator, which starts with empty list and accumulates inputs by adding them into the list.
+def defaultMinPartitions: Int
+
+Default min number of partitions for Hadoop RDDs when not given by user Notice that we use math.min so the "defaultMinPartitions" cannot be higher than 2.
+def defaultParallelism: Int
+
+Default level of parallelism to use when not given by user (e.g.
+def deployMode: String
+def doubleAccumulator(name: String): DoubleAccumulator
+
+Create and register a double accumulator, which starts with 0 and accumulates inputs by add.
+def doubleAccumulator: DoubleAccumulator
+
+Create and register a double accumulator, which starts with 0 and accumulates inputs by add.
+def emptyRDD[T](implicit arg0: ClassTag[T]): RDD[T]
+
+Get an RDD that has no partitions or elements.
+def files: Seq[String]
+Developer API def getAllPools: Seq[Schedulable]
+
+Return pools for fair scheduler
+def getCheckpointDir: Option[String]
+def getConf: SparkConf
+
+Return a copy of this SparkContext's configuration.
+def getExecutorMemoryStatus: Map[String, (Long, Long)]
+
+Return a map from the slave to the max memory available for caching and the remaining memory available for caching.
+def getLocalProperty(key: String): String
+
+Get a local property set in this thread, or null if it is missing.
+def getPersistentRDDs: Map[Int, RDD[_]]
+
+Returns an immutable map of RDDs that have marked themselves as persistent via cache() call.
+Developer API def getPoolForName(pool: String): Option[Schedulable]
+
+Return the pool associated with the given name, if one exists
+Developer API def getRDDStorageInfo: Array[RDDInfo]
+
+Return information about what RDDs are cached, if they are in mem or on disk, how much space they take, etc.
+def getSchedulingMode: SchedulingMode
+
+Return current scheduling mode
+def hadoopConfiguration: Configuration
+
+A default Hadoop Configuration for the Hadoop code (e.g.
+def hadoopFile[K, V, F <: InputFormat[K, V]](path: String)(implicit km: ClassTag[K], vm: ClassTag[V], fm: ClassTag[F]): RDD[(K, V)]
+
+Smarter version of hadoopFile() that uses class tags to figure out the classes of keys, values and the InputFormat so that users don't need to pass them directly.
+def hadoopFile[K, V, F <: InputFormat[K, V]](path: String, minPartitions: Int)(implicit km: ClassTag[K], vm: ClassTag[V], fm: ClassTag[F]): RDD[(K, V)]
+
+Smarter version of hadoopFile() that uses class tags to figure out the classes of keys, values and the InputFormat so that users don't need to pass them directly.
+def hadoopFile[K, V](path: String, inputFormatClass: Class[_ <: InputFormat[K, V]], keyClass: Class[K], valueClass: Class[V], minPartitions: Int = defaultMinPartitions): RDD[(K, V)]
+
+Get an RDD for a Hadoop file with an arbitrary InputFormat
+def hadoopRDD[K, V](conf: JobConf, inputFormatClass: Class[_ <: InputFormat[K, V]], keyClass: Class[K], valueClass: Class[V], minPartitions: Int = defaultMinPartitions): RDD[(K, V)]
+
+Get an RDD for a Hadoop-readable dataset from a Hadoop JobConf given its InputFormat and other necessary info (e.g.
+def isLocal: Boolean
+def isStopped: Boolean
+
+def jars: Seq[String]
+Developer API def killExecutor(executorId: String): Boolean
+
+Request that the cluster manager kill the specified executor.
+Developer API def killExecutors(executorIds: Seq[String]): Boolean
+
+Request that the cluster manager kill the specified executors.
+def killTaskAttempt(taskId: Long, interruptThread: Boolean = true, reason: String = ...): Boolean
+
+Kill and reschedule the given task attempt.
+def listFiles(): Seq[String]
+
+Returns a list of file paths that are added to resources.
+def listJars(): Seq[String]
+
+Returns a list of jar files that are added to resources.
+def longAccumulator(name: String): LongAccumulator
+
+Create and register a long accumulator, which starts with 0 and accumulates inputs by add.
+def longAccumulator: LongAccumulator
+
+Create and register a long accumulator, which starts with 0 and accumulates inputs by add.
+def makeRDD[T](seq: Seq[(T, Seq[String])])(implicit arg0: ClassTag[T]): RDD[T]
+
+Distribute a local Scala collection to form an RDD, with one or more location preferences (hostnames of Spark nodes) for each object.
+def makeRDD[T](seq: Seq[T], numSlices: Int = defaultParallelism)(implicit arg0: ClassTag[T]): RDD[T]
+
+Distribute a local Scala collection to form an RDD.
+def master: String
+def newAPIHadoopFile[K, V, F <: InputFormat[K, V]](path: String, fClass: Class[F], kClass: Class[K], vClass: Class[V], conf: Configuration = hadoopConfiguration): RDD[(K, V)]
+
+Get an RDD for a given Hadoop file with an arbitrary new API InputFormat and extra configuration options to pass to the input format.
+def newAPIHadoopFile[K, V, F <: InputFormat[K, V]](path: String)(implicit km: ClassTag[K], vm: ClassTag[V], fm: ClassTag[F]): RDD[(K, V)]
+
+Smarter version of newApiHadoopFile that uses class tags to figure out the classes of keys, values and the org.apache.hadoop.mapreduce.InputFormat (new MapReduce API) so that user don't need to pass them directly.
+def newAPIHadoopRDD[K, V, F <: InputFormat[K, V]](conf: Configuration = hadoopConfiguration, fClass: Class[F], kClass: Class[K], vClass: Class[V]): RDD[(K, V)]
+
+Get an RDD for a given Hadoop file with an arbitrary new API InputFormat and extra configuration options to pass to the input format.
+def objectFile[T](path: String, minPartitions: Int = defaultMinPartitions)(implicit arg0: ClassTag[T]): RDD[T]
+
+Load an RDD saved as a SequenceFile containing serialized objects, with NullWritable keys and BytesWritable values that contain a serialized partition.
+def parallelize[T](seq: Seq[T], numSlices: Int = defaultParallelism)(implicit arg0: ClassTag[T]): RDD[T]
+
+Distribute a local Scala collection to form an RDD.
+def range(start: Long, end: Long, step: Long = 1, numSlices: Int = defaultParallelism): RDD[Long]
+
+Creates a new RDD[Long] containing elements from start to end(exclusive), increased by step every element.
+def register(acc: AccumulatorV2[_, _], name: String): Unit
+
+Register the given accumulator with given name.
+def register(acc: AccumulatorV2[_, _]): Unit
+
+Register the given accumulator.
+Developer API def removeSparkListener(listener: SparkListenerInterface): Unit
+
+Deregister the listener from Spark's listener bus.
+Developer API def requestExecutors(numAdditionalExecutors: Int): Boolean
+
+Request an additional number of executors from the cluster manager.
+Developer API def requestTotalExecutors(numExecutors: Int, localityAwareTasks: Int, hostToLocalTaskCount: Map[String, Int]): Boolean
+
+Update the cluster manager on our scheduling needs.
+Developer API def runApproximateJob[T, U, R](rdd: RDD[T], func: (TaskContext, Iterator[T]) ⇒ U, evaluator: ApproximateEvaluator[U, R], timeout: Long): PartialResult[R]
+
+Run a job that can return approximate results.
+def runJob[T, U](rdd: RDD[T], processPartition: (Iterator[T]) ⇒ U, resultHandler: (Int, U) ⇒ Unit)(implicit arg0: ClassTag[U]): Unit
+
+Run a job on all partitions in an RDD and pass the results to a handler function.
+def runJob[T, U](rdd: RDD[T], processPartition: (TaskContext, Iterator[T]) ⇒ U, resultHandler: (Int, U) ⇒ Unit)(implicit arg0: ClassTag[U]): Unit
+
+Run a job on all partitions in an RDD and pass the results to a handler function.
+def runJob[T, U](rdd: RDD[T], func: (Iterator[T]) ⇒ U)(implicit arg0: ClassTag[U]): Array[U]
+
+Run a job on all partitions in an RDD and return the results in an array.
+def runJob[T, U](rdd: RDD[T], func: (TaskContext, Iterator[T]) ⇒ U)(implicit arg0: ClassTag[U]): Array[U]
+
+Run a job on all partitions in an RDD and return the results in an array.
+def runJob[T, U](rdd: RDD[T], func: (Iterator[T]) ⇒ U, partitions: Seq[Int])(implicit arg0: ClassTag[U]): Array[U]
+
+Run a function on a given set of partitions in an RDD and return the results as an array.
+def runJob[T, U](rdd: RDD[T], func: (TaskContext, Iterator[T]) ⇒ U, partitions: Seq[Int])(implicit arg0: ClassTag[U]): Array[U]
+
+Run a function on a given set of partitions in an RDD and return the results as an array.
+def runJob[T, U](rdd: RDD[T], func: (TaskContext, Iterator[T]) ⇒ U, partitions: Seq[Int], resultHandler: (Int, U) ⇒ Unit)(implicit arg0: ClassTag[U]): Unit
+
+Run a function on a given set of partitions in an RDD and pass the results to the given handler function.
+def sequenceFile[K, V](path: String, minPartitions: Int = defaultMinPartitions)(implicit km: ClassTag[K], vm: ClassTag[V], kcf: () ⇒ WritableConverter[K], vcf: () ⇒ WritableConverter[V]): RDD[(K, V)]
+
+Version of sequenceFile() for types implicitly convertible to Writables through a WritableConverter.
+def sequenceFile[K, V](path: String, keyClass: Class[K], valueClass: Class[V]): RDD[(K, V)]
+
+Get an RDD for a Hadoop SequenceFile with given key and value types.
+def sequenceFile[K, V](path: String, keyClass: Class[K], valueClass: Class[V], minPartitions: Int): RDD[(K, V)]
+
+Get an RDD for a Hadoop SequenceFile with given key and value types.
+def setCallSite(shortCallSite: String): Unit
+
+Set the thread-local property for overriding the call sites of actions and RDDs.
+def setCheckpointDir(directory: String): Unit
+
+Set the directory under which RDDs are going to be checkpointed.
+def setJobDescription(value: String): Unit
+
+Set a human readable description of the current job.
+def setJobGroup(groupId: String, description: String, interruptOnCancel: Boolean = false): Unit
+
+Assigns a group ID to all the jobs started by this thread until the group ID is set to a different value or cleared.
+def setLocalProperty(key: String, value: String): Unit
+
+Set a local property that affects jobs submitted from this thread, such as the Spark fair scheduler pool.
+def setLogLevel(logLevel: String): Unit
+
+Control our logLevel.
+val sparkUser: String
+val startTime: Long
+def statusTracker: SparkStatusTracker
+def stop(): Unit
+
+Shut down the SparkContext.
+def submitJob[T, U, R](rdd: RDD[T], processPartition: (Iterator[T]) ⇒ U, partitions: Seq[Int], resultHandler: (Int, U) ⇒ Unit, resultFunc: ⇒ R): SimpleFutureAction[R]
+
+Submit a job for execution and return a FutureJob holding the result.
+def textFile(path: String, minPartitions: Int = defaultMinPartitions): RDD[String]
+
+Read a text file from HDFS, a local file system (available on all nodes), or any Hadoop-supported file system URI, and return it as an RDD of Strings.
+def uiWebUrl: Option[String]
+def union[T](first: RDD[T], rest: RDD[T]*)(implicit arg0: ClassTag[T]): RDD[T]
+
+Build the union of a list of RDDs passed as variable-length arguments.
+def union[T](rdds: Seq[RDD[T]])(implicit arg0: ClassTag[T]): RDD[T]
+
+Build the union of a list of RDDs.
+def version: String
+
+The version of Spark on which this application is running.
+def wholeTextFiles(path: String, minPartitions: Int = defaultMinPartitions): RDD[(String, String)]
+
+Read a directory of text files from HDFS, a local file system (available on all nodes), or any Hadoop-supported file system URI.
+
+Deprecated Value Members
+
+def accumulable[R, T](initialValue: R, name: String)(implicit param: AccumulableParam[R, T]): Accumulable[R, T]
+
+Create an org.apache.spark.Accumulable shared variable, with a name for display in the Spark UI.
+def accumulable[R, T](initialValue: R)(implicit param: AccumulableParam[R, T]): Accumulable[R, T]
+
+Create an org.apache.spark.Accumulable shared variable, to which tasks can add values with +=.
+def accumulableCollection[R, T](initialValue: R)(implicit arg0: (R) ⇒ Growable[T] with TraversableOnce[T] with Serializable, arg1: ClassTag[R]): Accumulable[R, T]
+
+Create an accumulator from a "mutable collection" type.
+def accumulator[T](initialValue: T, name: String)(implicit param: AccumulatorParam[T]): Accumulator[T]
+
+Create an org.apache.spark.Accumulator variable of a given type, with a name for display in the Spark UI.
+def accumulator[T](initialValue: T)(implicit param: AccumulatorParam[T]): Accumulator[T]
+
+Create an org.apache.spark.Accumulator variable of a given type, which tasks can "add" values to using the += method.
+Developer API def getExecutorStorageStatus: Array[StorageStatus]
+
+Return information about blocks stored in all of the slaves
+
